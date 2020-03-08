@@ -1,9 +1,18 @@
 {
-  "name": "COMP4513_ASGN2BackEnd",
+  "name": "comp4513_asgn2backend",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongoose": "^5.9.3",
+    "cors": "^2.8.5",
+    "body-parser": "^1.19.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  },
+  "scripts": {
+    "start": "nodemon index.js"
   }
 }

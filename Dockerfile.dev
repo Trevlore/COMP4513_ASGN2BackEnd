@@ -4,10 +4,9 @@ ENV NODE_ENV=development
 
 RUN mkdir /opt/app
 
-COPY ./ /opt/app
+VOLUME /opt/app
 
 WORKDIR /opt/app
 
-RUN yarn
 
-ENTRYPOINT yarn start
+ENTRYPOINT cd /opt/app; yarn run start-dev

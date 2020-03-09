@@ -1,6 +1,7 @@
 const parser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
+const {addHealthCheck} = require('./scripts/healthcheck');
 
 const app = express();
 const http = require('http').createServer(app);
@@ -14,7 +15,7 @@ app.use(parser.json());
 app.use(parser.urlencoded({extended:true}));
 app.use(cors(corsOptions));
 
-app.get('/', (req, resp)=>resp.json({message: "hello world"}));
+addHealthCheck(app);
 
 const port = process.env.PORT || 8080;
 

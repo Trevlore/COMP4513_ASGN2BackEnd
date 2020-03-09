@@ -7,17 +7,30 @@ on:
   push:
     branches: [ master ]
 
+env:
+  PROJECT_ID: ${{ secrets.RUN_PROJECT }}
+  RUN_REGION: us-central1
+  SERVICE_NAME: comp4513_asgn2-backend
 
 jobs:
   buildAndDeploy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Setup Google Cloud SDK
-      uses: mathrix-education/setup-gcloud@1.1.0
+      
+      #from https://github.com/GoogleCloudPlatform/github-actions/blob/master/example-workflows/cloud-run/.github/workflows/cloud-run.yml
+      # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
-        service_account_email: ${{ secrets.GCP_SA_EMAIL }}
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        version: '275.0.0'
+        service_account_email: ${{ secrets. GCP_SA_EMAIL }}
+        service_account_key: ${{ secrets.GCP_SA_KEY}}
 
-
+      # Configure gcloud CLI
+    - name: gcloud Set up
+      run: |
+        gcloud config set project $PROJECT_ID
+    - name: deploy to appengine 
+      run: |
+        gcloud app deploy
       

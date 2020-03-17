@@ -8,5 +8,4 @@ VOLUME /opt/app
 
 WORKDIR /opt/app
 
-
 ENTRYPOINT cd /opt/app; npm run start-dev

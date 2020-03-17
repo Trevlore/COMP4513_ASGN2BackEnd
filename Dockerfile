@@ -8,6 +8,6 @@ COPY ./ /opt/app
 
 WORKDIR /opt/app
 
-RUN yarn
+RUN npm i
 
 ENTRYPOINT node /opt/app/index.js

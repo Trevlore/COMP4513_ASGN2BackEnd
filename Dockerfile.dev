@@ -9,4 +9,4 @@ VOLUME /opt/app
 WORKDIR /opt/app
 
 
-ENTRYPOINT cd /opt/app; yarn run start-dev
+ENTRYPOINT cd /opt/app; npm run start-dev

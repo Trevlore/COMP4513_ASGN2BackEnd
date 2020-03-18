@@ -17,7 +17,10 @@ const connect = () => {
         console.log("connected to mongo");
     });
 };
-
+const close = ()=>{
+    mongoose.connection.close()
+};
 module.exports = {
-    connect
+    connect,
+    close
 };

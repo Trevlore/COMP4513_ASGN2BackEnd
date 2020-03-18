@@ -2,6 +2,9 @@ const parser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
 const {addHealthCheck} = require('./scripts/healthcheck');
+const connect = require('./db/connect');
+
+connect.connect();
 
 const app = express();
 const http = require('http').createServer(app);
@@ -22,3 +25,5 @@ const port = process.env.PORT || 8080;
 http.listen(port, ()=>{
     console.log("Server running at "+port);
 });
+
+process.on('exit', (options,exitCode)=>{connect.close()});

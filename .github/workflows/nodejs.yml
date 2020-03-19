@@ -19,7 +19,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - uses: Generate Env File
+    - name: Generate Env File
       run: |
         cat <<EOF >>.env
         MONGO_USER=${{ secrets.MONGO_USER }}

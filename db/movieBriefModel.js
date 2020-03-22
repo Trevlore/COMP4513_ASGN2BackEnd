@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 
+
+
 const schema = new mongoose.Schema({
     "id" : Number,
     "tmdb_id" : Number,
     "imdb_id" : String,
-    "release_date" : String,
+    "release_date" : Date,
     "title" : String,
     "runtime" : Number,
     "revenue" : Number,

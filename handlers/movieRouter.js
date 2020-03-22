@@ -45,17 +45,30 @@ const handleSingleFullMovie = (app, Movie) => {
   });
 };
 
-//
+//aggregate queries go here
+// Title = :/sub/
+// year - release_date works without quotes
 const handleFilteredBriefMovies = (app, MovieBrief) => {
-  app.route("/api/find/title/:substr").get((req, resp) => {});
-  app.route("/api/find/year/:low/:high").get((req, resp) => {});
+  app.route("/api/find/title/:substr").get((req, resp) => {
+      MovieBrief.find({title :`/${req.params.substr}/`}, (err, data) => {
+        if (err) {
+            resp.json({message: "no substring match"})
+        } else {
+            resp.json(data);
+        }  
+      })
+  });
+  app.route("/api/find/year/:low/:high").get((req, resp) => {
+      MovieBrief.find({})
+  });
   app.route("/api/find/rating/:low/:high").get((req, resp) => {});
 };
 
 // full CRUD
+// test user hard coded until auth is working
 const handleFavorites = (app, User) => {
   app.route("/api/favorites/").get((req, resp) => {
-    User.find();
+    User.find({id:99});
   });
   app.route("/api/favorites/").put((req, resp) => {
     User.insert();

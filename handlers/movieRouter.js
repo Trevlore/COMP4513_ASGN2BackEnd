@@ -50,7 +50,7 @@ const handleSingleFullMovie = (app, Movie) => {
 // year - release_date works without quotes
 const handleFilteredBriefMovies = (app, MovieBrief) => {
   app.route("/api/find/title/:substr").get((req, resp) => {
-    MovieBrief.find({ title: `/${req.params.substr}/` }, (err, data) => {
+    MovieBrief.find({ title: new RegExp(`.*${req.params.substr}.*`, 'i') }, (err, data) => {
       if (err) {
         resp.json({ message: "no substring match" });
       } else {
@@ -88,16 +88,28 @@ const handleFilteredBriefMovies = (app, MovieBrief) => {
 
 // full CRUD
 // test user hard coded until auth is working
+// on successful JWT challenge a user profile can be encoded and stored on the server, apparently
+// don't know if i need to supply data via http/s header or or node vars. 
+// is adding to the list a create or an update? i guess it's an update
 const handleFavorites = (app, User) => {
   app.route("/api/favorites/").get((req, resp) => {
-    User.find({ id: 99 });
+    User.find({id: 99}, (err,data) => {
+        if (err) {
+            resp.json({message: "retrieve favorites failed"})
+        } else {
+            resp.json(data)
+        }
+    });
   });
+  // maybe put isn't needed? 
   app.route("/api/favorites/").put((req, resp) => {
     User.insert();
   });
+
   app.route("/api/favorites/").post((req, resp) => {
     User.update();
   });
+  
   app.route("/api/favorites/").delete((req, resp) => {
     User.remove();
   });

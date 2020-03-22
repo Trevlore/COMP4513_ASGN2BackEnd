@@ -50,25 +50,47 @@ const handleSingleFullMovie = (app, Movie) => {
 // year - release_date works without quotes
 const handleFilteredBriefMovies = (app, MovieBrief) => {
   app.route("/api/find/title/:substr").get((req, resp) => {
-      MovieBrief.find({title :`/${req.params.substr}/`}, (err, data) => {
-        if (err) {
-            resp.json({message: "no substring match"})
-        } else {
-            resp.json(data);
-        }  
-      })
+    MovieBrief.find({ title: `/${req.params.substr}/` }, (err, data) => {
+      if (err) {
+        resp.json({ message: "no substring match" });
+      } else {
+        resp.json(data);
+      }
+    });
   });
   app.route("/api/find/year/:low/:high").get((req, resp) => {
-      MovieBrief.find({})
+    MovieBrief.find(
+      {
+        release_date: {
+          $gte: `${req.params.low}`,
+          $lte: `${req.params.high}`
+        }
+      },
+      (err, data) => {
+        if (err) {
+          resp.json({ message: "date filter error" });
+        } else {
+          resp.json(data);
+        }
+      }
+    );
   });
-  app.route("/api/find/rating/:low/:high").get((req, resp) => {});
+  app.route("/api/find/rating/:low/:high").get((req, resp) => {
+      MovieBrief.find({"ratings.average": {$gte:req.params.low, $lte: req.params.high}}, (err,data) => {
+          if (err) {
+              resp.json({message: "rating filter error"});
+          } else {
+              resp.json(data);
+          }
+      })
+  });
 };
 
 // full CRUD
 // test user hard coded until auth is working
 const handleFavorites = (app, User) => {
   app.route("/api/favorites/").get((req, resp) => {
-    User.find({id:99});
+    User.find({ id: 99 });
   });
   app.route("/api/favorites/").put((req, resp) => {
     User.insert();

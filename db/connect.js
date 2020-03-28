@@ -1,5 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
+//mongoose.set('debug', true);
 
 const connect = () => {
     const opt = {

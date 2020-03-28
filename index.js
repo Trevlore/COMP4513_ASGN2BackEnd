@@ -3,11 +3,11 @@ const cors = require('cors');
 const express = require('express');
 const {addHealthCheck} = require('./scripts/healthcheck');
 const connect = require('./db/connect');
-
+const {setupPassport} = require('./scripts/auth');
+const {setupUser} = require('./scripts/user');
 connect.connect();
 
 const app = express();
-const http = require('http').createServer(app);
 
 
 corsOptions={
@@ -19,10 +19,11 @@ app.use(parser.urlencoded({extended:true}));
 app.use(cors(corsOptions));
 
 addHealthCheck(app);
-
+setupPassport(app);
+setupUser(app);
 const port = process.env.PORT || 8080;
 
-http.listen(port, ()=>{
+app.listen(port, ()=>{
     console.log("Server running at "+port);
 });
 

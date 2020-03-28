@@ -1,3 +1,5 @@
+const {checkAuthenticated} = require('../scripts/auth');
+
 // api requests for movie data
 
 // var naming scheme - verbNoun where nouns list least common to most common for ease of reading
@@ -12,7 +14,7 @@
 
 // only retrieve
 const handleAllBriefMovies = (app, MovieBrief) => {
-  app.route("/api/brief").get((req, resp) => {
+  app.route("/api/brief").get(checkAuthenticated,(req, resp) => {
     MovieBrief.find({}, (err, data) => {
       if (err) {
         resp.json({ message: "cannot connect to da'bee" });
@@ -23,7 +25,7 @@ const handleAllBriefMovies = (app, MovieBrief) => {
   });
 };
 const handleAllFullMovies = (app, Movie) => {
-  app.route("/api/movies").get((req, resp) => {
+  app.route("/api/movies").get(checkAuthenticated,(req, resp) => {
     Movie.find({}, (err, data) => {
       if (err) {
         resp.json({ message: "cannot connect to full movie BataDase " });
@@ -34,7 +36,7 @@ const handleAllFullMovies = (app, Movie) => {
   });
 };
 const handleSingleFullMovie = (app, Movie) => {
-  app.route("/api/movies/:id").get((req, resp) => {
+  app.route("/api/movies/:id").get(checkAuthenticated,(req, resp) => {
     Movie.find({ id: req.params.id }, (err, data) => {
       if (err) {
         resp.json({ message: "full movie ID not phrowned" });
@@ -49,7 +51,7 @@ const handleSingleFullMovie = (app, Movie) => {
 // Title = :/sub/
 // year - release_date works without quotes
 const handleFilteredBriefMovies = (app, MovieBrief) => {
-  app.route("/api/find/title/:substr").get((req, resp) => {
+  app.route("/api/find/title/:substr").get(checkAuthenticated,(req, resp) => {
     MovieBrief.find({ title: new RegExp(`.*${req.params.substr}.*`, 'i') }, (err, data) => {
       if (err) {
         resp.json({ message: "no substring match" });
@@ -58,7 +60,7 @@ const handleFilteredBriefMovies = (app, MovieBrief) => {
       }
     });
   });
-  app.route("/api/find/year/:low/:high").get((req, resp) => {
+  app.route("/api/find/year/:low/:high").get(checkAuthenticated,(req, resp) => {
     MovieBrief.find(
       {
         release_date: {
@@ -75,7 +77,7 @@ const handleFilteredBriefMovies = (app, MovieBrief) => {
       }
     );
   });
-  app.route("/api/find/rating/:low/:high").get((req, resp) => {
+  app.route("/api/find/rating/:low/:high").get(checkAuthenticated,(req, resp) => {
       MovieBrief.find({"ratings.average": {$gte:req.params.low, $lte: req.params.high}}, (err,data) => {
           if (err) {
               resp.json({message: "rating filter error"});
@@ -89,10 +91,10 @@ const handleFilteredBriefMovies = (app, MovieBrief) => {
 // full CRUD
 // test user hard coded until auth is working
 // on successful JWT challenge a user profile can be encoded and stored on the server, apparently
-// don't know if i need to supply data via http/s header or or node vars. 
+// don't know if i need to supply data via http/s header or or node vars.
 // is adding to the list a create or an update? i guess it's an update
 const handleFavorites = (app, User) => {
-  app.route("/api/favorites/").get((req, resp) => {
+  app.route("/api/favorites/").get(checkAuthenticated,(req, resp) => {
     User.find({id: 99}, (err,data) => {
         if (err) {
             resp.json({message: "retrieve favorites failed"})
@@ -101,16 +103,16 @@ const handleFavorites = (app, User) => {
         }
     });
   });
-  // maybe put isn't needed? 
-  app.route("/api/favorites/").put((req, resp) => {
+  // maybe put isn't needed?
+  app.route("/api/favorites/").put(checkAuthenticated,(req, resp) => {
     User.insert();
   });
 
-  app.route("/api/favorites/").post((req, resp) => {
+  app.route("/api/favorites/").post(checkAuthenticated,(req, resp) => {
     User.update();
   });
-  
-  app.route("/api/favorites/").delete((req, resp) => {
+
+  app.route("/api/favorites/").delete(checkAuthenticated,(req, resp) => {
     User.remove();
   });
 };

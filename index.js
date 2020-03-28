@@ -7,7 +7,8 @@ const connect = require("./db/connect");
 const MovieBrief = require('./db/movieBriefModel.js');
 const Movie = require('./db/movieModel.js');
 const User = require('./db/userModel.js');
-
+/**add passport**/
+const {setupPassport} = require('./scripts/auth');
 connect.connect();
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(parser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 
 addHealthCheck(app);
+setupPassport(app);
 
 const movieRouter = require('./handlers/movieRouter.js');
 movieRouter.handleAllBriefMovies(app, MovieBrief);

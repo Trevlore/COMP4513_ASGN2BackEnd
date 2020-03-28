@@ -18,7 +18,6 @@ const opts = {
 passport.use('jwt',new JwtStrategy(opts,
     (jwt_payload, done) => {
     User.findOne({id: jwt_payload.sub}).exec((err, user) => {
-        console.log('hi')
         if(err){
             return done(err)
         }else{
@@ -56,7 +55,6 @@ passport.use('local',new LocalStrategy({
 
 const checkAuthenticated = (req,res,next)=>{
     passport.authenticate('jwt', {session: false}, (err, user, info)=>{
-        console.log("checking auth");
         if (err) { return next(err); }
         if(info){
             res.status(401);

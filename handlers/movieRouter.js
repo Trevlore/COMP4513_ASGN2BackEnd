@@ -95,11 +95,11 @@ const handleFilteredBriefMovies = (app, MovieBrief) => {
 // is adding to the list a create or an update? i guess it's an update
 const handleFavorites = (app, User) => {
   app.route("/api/favorites/").get(checkAuthenticated,(req, resp) => {
-    User.find({id: 99}, (err,data) => {
+    User.find({id: req.user.id}, (err,data) => {
         if (err) {
             resp.json({message: "retrieve favorites failed"})
         } else {
-            resp.json(data)
+            resp.json({data : data.favorites})
         }
     });
   });
@@ -109,11 +109,23 @@ const handleFavorites = (app, User) => {
   });
 
   app.route("/api/favorites/").post(checkAuthenticated,(req, resp) => {
-    User.update();
+    User.update({id: req.user.id}, {$push: {favorites: req.body.favId}}, (err, data)=>{
+      if(err){
+        resp.json({message: "update favorites failed"})
+      }else {
+        resp.status(200);
+      }
+    });
   });
 
   app.route("/api/favorites/").delete(checkAuthenticated,(req, resp) => {
-    User.remove();
+    User.remove({id: req.user.id}, {$pull: {favorites:req.body.favId}}, (err, data) => {
+      if (err) {
+        resp.json({message: "remove favorite failed"})
+      } else {
+        resp.status(200);
+      }
+    });
   });
 };
 

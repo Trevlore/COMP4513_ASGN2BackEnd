@@ -25,7 +25,7 @@ const handleAllBriefMovies = (app, MovieBrief) => {
   });
 };
 const handleAllFullMovies = (app, Movie) => {
-  app.route("/api/movies").get(checkAuthenticated,(req, resp) => {
+  app.route("/api/movies").get(checkAuthenticated, (req, resp) => {
     Movie.find({}, (err, data) => {
       if (err) {
         resp.json({ message: "cannot connect to full movie BataDase " });
@@ -88,26 +88,19 @@ const handleFilteredBriefMovies = (app, MovieBrief) => {
   });
 };
 
-// full CRUD
-// test user hard coded until auth is working
-// on successful JWT challenge a user profile can be encoded and stored on the server, apparently
-// don't know if i need to supply data via http/s header or or node vars.
-// is adding to the list a create or an update? i guess it's an update
+
 const handleFavorites = (app, User) => {
-  app.route("/api/favorites/").get(checkAuthenticated,(req, resp) => {
-    User.find({id: req.user.id}, (err,data) => {
+  //app.route("/api/favorites/:id").get(checkAuthenticated,(req, resp) => { //if id is supplied req.params works
+  app.route("/api/favorites").get(checkAuthenticated,(req, resp) => {
+    //User.find({id: req.params.id}, (err,data) => {
+    User.find({id: req.user}, (err,data) => { // does not work, req.user.id returns undefined
         if (err) {
             resp.json({message: "retrieve favorites failed"})
         } else {
-            resp.json({data : data.favorites})
+            resp.json({ favorites : data[0].favorites})
         }
     });
   });
-  // maybe put isn't needed?
-  app.route("/api/favorites/").put(checkAuthenticated,(req, resp) => {
-    User.insert();
-  });
-
   app.route("/api/favorites/").post(checkAuthenticated,(req, resp) => {
     User.update({id: req.user.id}, {$push: {favorites: req.body.favId}}, (err, data)=>{
       if(err){

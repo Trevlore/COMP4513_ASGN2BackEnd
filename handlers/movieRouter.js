@@ -47,9 +47,7 @@ const handleSingleFullMovie = (app, Movie) => {
   });
 };
 
-//aggregate queries go here
-// Title = :/sub/
-// year - release_date works without quotes
+
 const handleFilteredBriefMovies = (app, MovieBrief) => {
   app.route("/api/find/title/:substr").get(checkAuthenticated, (req, resp) => {
     MovieBrief.find(
@@ -109,8 +107,6 @@ const handleFavorites = (app, User) => {
     });
   });
 
-  // check if exists,
-  // do nothing or add
   app.route("/api/favorites/").post(checkAuthenticated, (req, resp) => {
     User.find({ id: req.user }, (err, data) => {
       if (err) {

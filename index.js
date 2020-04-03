@@ -14,6 +14,8 @@ connect.connect();
 const app = express();
 const http = require("http").createServer(app);
 
+
+//"No "Access-Control-Allow-Origin" 
 corsOptions = {
   origin: "*",
   optionsSuccessStatus: 200

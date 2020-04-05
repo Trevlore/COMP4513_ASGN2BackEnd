@@ -24,6 +24,7 @@ app.use(cors(corsOptions));
 
 addHealthCheck(app);
 setupPassport(app);
+require('./scripts/user').setupUser(app);
 
 const movieRouter = require('./handlers/movieRouter.js');
 movieRouter.handleAllBriefMovies(app, MovieBrief);

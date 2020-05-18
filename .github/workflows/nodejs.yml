@@ -36,7 +36,7 @@ jobs:
     # Configure gcloud CLI
     - name: gcloud Set up
       run: |
-        gcloud config set project $PROJECT_ID
+        gcloud config set project $SERVICE_NAME
     - name: deploy to appengine
       run: |
         gcloud app deploy

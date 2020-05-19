@@ -10,8 +10,8 @@ const moment = require('moment');
 const opts = {
     jwtFromRequest: ExtractJwt.fromUrlQueryParameter('auth_token'),
     secretOrKey: process.env.JWT_SECRET,
-    issuer: 'api-asgn2.farsos.ca',
-    audience: 'api-asgn2.farsos.ca'
+    issuer: 'demos-277419.uc.r.appspot.com',
+    audience: 'demos-277419.uc.r.appspot.com'
 };
 
 
